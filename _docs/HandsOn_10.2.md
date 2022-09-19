@@ -13,16 +13,14 @@ In this hands on, we are going to create a more complex query and output that to
 			<cfargument name="condicoesFiltros" type="string" required="true">
 			<cfquery name="qPosts" datasource="cursocf-senac">
 				select a.blogpostid as id
-						, c.name as nomeCategoria
-						, a.title as titulo
-						, a.summary as resumo
-						, a.body as conteudo
-						, to_char(a.dateposted, 'DD/MM/YYYY') as dataPostagem
-						, to_char(a.createdDateTime, 'DD/MM/YYYY HH12:MI:SS') as dataHoraSistema
-						, (select count(*) from BlogComment bc where a.blogpostid = bc.blogpostid) as qtdComentarios
-				 from blogPost a
-				 inner join blogpostcategory rl on rl.postid = a.blogpostid
-				 inner join blogCategory c on c.blogcategoryid = rl.categoryid
+					, (select c.name from blogCategory c, blogpostcategory rl where c.blogcategoryid = rl.categoryid and rl.postid = a.blogpostid limit 1) as nomeCategoria
+					, a.title as titulo
+					, a.summary as resumo
+					, a.body as conteudo
+					, to_char(a.dateposted, 'DD/MM/YYYY') as dataPostagem
+					, to_char(a.createdDateTime, 'DD/MM/YYYY HH12:MI:SS') as dataHoraSistema
+				, (select count(*) from BlogComment bc where a.blogpostid = bc.blogpostid) as qtdComentarios
+			 from blogPost a
 				 where #preserveSingleQuotes(arguments.condicoesFiltros)#
 			</cfquery>
 			
