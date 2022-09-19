@@ -47,7 +47,7 @@ In this hands on, we are going to create a more complex query and output that to
 1. Open the resume.cfm file and replace the cfquery calls with the new calls below:
 
     ```cfml
-    <cfset instCFC = createObject("component","cfc.Resume") />
+    <cfset instCFC = createObject("component","cfc.models.Resume") />
 	<cfset mySkillSet = instCFC.getMySkillSet()>
 	<cfset variables.condicoes = " 0 = 0" />
 	<cfset myResume = instCFC.getMyResume(condicoesFiltros: variables.condicoes) />
