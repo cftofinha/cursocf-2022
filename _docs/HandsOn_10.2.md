@@ -11,7 +11,7 @@ In this hands on, we are going to create a more complex query and output that to
 	
 		<cffunction name="getPostsBlog" output="false" access="remote" returntype="query">
 			<cfargument name="condicoesFiltros" type="string" required="true">
-			<cfquery name="qPosts" datasource="#application.config.datasource#">
+			<cfquery name="qPosts" datasource="cursocf-senac">
 				select a.blogpostid as id
 						, c.name as nomeCategoria
 						, a.title as titulo
