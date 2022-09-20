@@ -28,7 +28,6 @@ In this hands on, we are going to create a more complex query and output that to
 			<cfargument name="author" type="string" required="true">
 			<cfargument name="comment" type="string" required="true">
 			
-			<cfset variables.dataPostagem = lsDateFormat(now(), 'yyyy-mm-dd') &" "& lsTimeFormat(now(), 'HH:mm:ss') />
 			<cfset strRetorno = {} />
 			
 			<cftry>
