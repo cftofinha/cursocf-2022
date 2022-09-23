@@ -18,7 +18,7 @@
 		<cfset variables.nomeArquivoFinal = form.imageOld />
 	</cfif>
 	<cfset qSalvarPortfolio = instCFC.salvarRegistro(
-			acao: "novo"
+			acao: form.acao
 			, title: form.title
 			, summary: form.summary
 			, website: form.website
