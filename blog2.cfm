@@ -1,7 +1,3 @@
-<cfparam name="form.submitted" default="0" />
-<cfparam name="form.token" default="" />
-<cfset variables.condicoes = " 0 = 0" />
-<cfset blogPost = createObject("component","cfc.models.PostBlog" ).getPostsBlog(condicoesFiltros: variables.condicoes) />
 <cfimport taglib="customTags/" prefix="layout" />
 <layout:page section="blog">  		
 <!-- Content Start -->
@@ -26,20 +22,25 @@
 				<div class="clr">
 					<div class="left">
 						<!-- Blog Posts -->
-						<cfoutput query="blogPost">
-							<!-- Start Blog Post -->
-							<h5>
-								<span>#blogPost.dataPostagem# </span>
-							</h5>
-							<h2>
-								<a href="blogpost.cfm?id=#blogPost.id#">#blogPost.titulo#</a>
-							</h2>
-							<p>#blogPost.resumo#</p>
-							<p class="summary">
-								<strong>Categories:</strong> #blogPost.nomeCategoria# <strong>Comments:</strong> #blogPost.qtdComentarios#
-							</p>
-							<!-- End Blog Post -->
-						</cfoutput>
+						<cfcache action="cache" timespan="#createtimespan(0,1,0,0)#">
+							<cfset blogPosts = Entityload('BlogPost') />
+							<cfoutput>
+								<cfloop array="#blogPosts#" index="blogPost">
+									<!-- Start Blog Post -->
+									<h5>
+										<span>#dateFormat(blogPost.datePosted,"mm/dd/yyyy")# </span>
+									</h5>
+									<h2>
+										<a href="blogpost.cfm?id=#blogPost.id#">#blogPost.title#</a>
+									</h2>
+									<p>#blogPost.summary#</p>
+									<p class="summary">
+										<strong>Categories:</strong> #blogPost.CategoryNames# <strong>Comments:</strong> #arrayLen(blogPost.getComments())#
+									</p>
+									<!-- End Blog Post -->
+								</cfloop>
+							</cfoutput>
+						</cfcache>
 					</div>
 					<div class="right" >
 						<h2>Categories</h2>

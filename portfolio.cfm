@@ -32,22 +32,20 @@
 				<div>
 					<ul id="portfolio-list">
 						<!-- Start Portfolio -->
-						<cfoutput>
-							<cfloop query="myPortfolio">
-								<li>
-									<div class="left">
-										<a href="#myPortfolio.website#" title="#myPortfolio.title#" class="viewDetail ">
-											<img src="assets/images/portfolio/#myPortfolio.image#"   alt=" " border="0" />
-											<h5>#myPortfolio.title#</h5>
-										</a>
-									</div>
-									<div class="right">
-										<p>
-											#myPortfolio.summary#
-										</p>
-									</div>
-								</li>  
-							</cfloop>  
+						<cfoutput query="myPortfolio">
+							<li>
+								<div class="left">
+									<a href="#myPortfolio.website#" title="#myPortfolio.title#" class="viewDetail ">
+										<img src="assets/images/portfolio/#myPortfolio.image#"   alt=" " border="0" />
+										<h5>#myPortfolio.title#</h5>
+									</a>
+								</div>
+								<div class="right">
+									<p>
+										#myPortfolio.summary#
+									</p>
+								</div>
+							</li>
 						</cfoutput>
 						<!-- End Portfolio -->
 					</ul>

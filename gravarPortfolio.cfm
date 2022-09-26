@@ -1,29 +1,28 @@
 <cfprocessingdirective pageencoding="utf-8" >
+<cfset variables.mensagemAoSalvar = "" />
 <cfset instCFC = createObject("component","cfc.models.Portfolio") />
 <cfif isDefined("form.submitted") and form.submitted eq 1>
-	<cfif len(trim(form.image))>
-		<cfset variables.codUUID = createUUID()>
-		<cfset variables.pastaBase = expandPath('/') & "cursocf/assets/images/portfolio" />
-		
-		<cffile action="upload" filefield="form.image" destination="#variables.pastaBase#\" nameconflict="makeunique">
-		
-		<cfset variables.nomeArquivo = left(variables.codUUID,8) &"_"& lsDateFormat(now(), "ddmmyy") &"T"& lsTimeFormat(now(),"HHmm") &"."& file.serverFileExt>
-		<cfset variables.nomeArquivoFinal = lCase(variables.nomeArquivo)>
-		
-		<cfset variables.arquivoEnviado = variables.pastaBase &"\"& file.serverFile>
-		<cffile action="rename" source="#variables.arquivoEnviado#" destination="#variables.pastaBase#\#variables.nomeArquivoFinal#">
-		<cfset variables.arquivoEnviado = 1/>
+	<cfset variables.pastaBase = expandPath('/') & "cursocf/assets/images/portfolio" />
+	<cfif isDefined("form.image")>
+		<cfset variables.imagem = form.image />
 	<cfelse>
-		<cfset variables.arquivoEnviado = 0/>
-		<cfset variables.nomeArquivoFinal = form.imageOld />
+		<cfset variables.imagem = form.imageOld />
 	</cfif>
+	
+	<cfset nomeArquivo = instCFC.fileUpload(
+		fileField: variables.imagem
+		,fileFieldOld: form.imageOld
+		,destination: variables.pastaBase) />
 	<cfset qSalvarPortfolio = instCFC.salvarRegistro(
+	<!---<cfset qSalvarPortfolio = createObject("component","cfc.controller.PortfolioController").salvarRegistro(--->
 			acao: form.acao
 			, title: form.title
 			, summary: form.summary
 			, website: form.website
-			, image: variables.nomeArquivoFinal
+			, image: nomeArquivo
 			, id: form.id) />
+			
+	<script>alert('<cfoutput>#qSalvarPortfolio.mensagem#</cfoutput>');</script>
 </cfif>
 
 <cfparam name="url.id" default="">
@@ -38,12 +37,8 @@
 </cfif>
 <cfset qCons = instCFC.getPortfolio(condicoesFiltros: variables.condicoes) />
 
-<!---<cfscript>
-	instCFC = createObject("component","cfc.models.Portifolio");
-	fileObj = createObject('component','fileio');
-	fileObj.fileUpload('form.something','c:\');
-</cfscript>--->
 <cfoutput>
+	
 <form action="gravarPortfolio.cfm" method="post" id="form" enctype="multipart/form-data">
 		<input type="hidden" name="id" id="id" value="#variables.idRegistro#">
 		<input type="hidden" name="acao" id="acao" value="#variables.acao#">

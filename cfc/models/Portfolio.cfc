@@ -16,7 +16,7 @@
 		
 	</cffunction>
 	
-	<cffunction name="setCadastrar" output="false" access="package" returntype="struct">
+	<cffunction name="setCadastrar" output="false" access="private" returntype="struct">
 		<cfargument name="title" type="string" required="true">
 		<cfargument name="summary" type="string" required="true">
 		<cfargument name="website" type="string" required="true">
@@ -35,8 +35,8 @@
 				values(
 					 <cfqueryparam value="#arguments.title#" cfsqltype="cf_sql_varchar">
 					, <cfqueryparam value="#arguments.summary#" cfsqltype="cf_sql_longvarchar">
-					, <cfqueryparam value="#arguments.website#" cfsqltype="cf_sql_char">
-					, <cfqueryparam value="#arguments.image#" cfsqltype="cf_sql_char">
+					, <cfqueryparam value="#arguments.website#" cfsqltype="cf_sql_varchar">
+					, <cfqueryparam value="#arguments.image#" cfsqltype="cf_sql_varchar">
 				)
 			</cfquery>
 			<cfset strRetorno.retorno = "sucesso" />
@@ -55,7 +55,7 @@
 		
 	</cffunction>
 	
-	<cffunction name="setAtualizar" output="false" access="package" returntype="struct">
+	<cffunction name="setAtualizar" output="false" access="private" returntype="struct">
 		<cfargument name="title" type="string" required="true">
 		<cfargument name="summary" type="string" required="true">
 		<cfargument name="website" type="string" required="true">
@@ -119,11 +119,29 @@
 		
 	</cffunction>
 	
-	<cffunction name="fileUpload" access="public" returntype="struct">
-		<cfargument name="fileField" required="true" type="string">
-		<cfargument name="destination" required="true" type="string">
+	<cffunction name="fileUpload" access="public" returntype="string">
+		<cfargument name="fileField" required="false" type="string">
+		<cfargument name="fileFieldOld" required="false" type="string">
+		<cfargument name="destination" required="false" type="string">
 		
-		<cffile action="upload" filefield="#arguments.fileField#" destination="#arguments.destination#">
+		<cfif isDefined("arguments.fileField") and len(trim(arguments.fileField))>
+			<cfset variables.codUUID = createUUID()>
+			
+			<cffile action="upload" filefield="#arguments.fileField#" destination="#arguments.destination#" nameconflict="makeunique">
+			
+			<cfset variables.nomeArquivo = left(variables.codUUID,8) &"_"& lsDateFormat(now(), "ddmmyy") &"T"& lsTimeFormat(now(),"HHmm") &"."& file.serverFileExt>
+			<cfset variables.nomeArquivoFinal = lCase(variables.nomeArquivo)>
+			
+			<cfset variables.arquivoEnviado = arguments.destination &"\"& file.serverFile>
+			<cffile action="rename" source="#variables.arquivoEnviado#" destination="#arguments.destination#\#variables.nomeArquivoFinal#">
+			<cfset variables.arquivoEnviado = 1/>
+		<cfelse>
+			<cfset variables.arquivoEnviado = 0/>
+			<cfset variables.nomeArquivoFinal = arguments.fileFieldOld />
+		</cfif>
+		
+		<cfreturn variables.nomeArquivoFinal>
+		
 	</cffunction>
 	
 	<cffunction name="salvarRegistro" access="remote" output="false" returntype="struct">
@@ -138,14 +156,14 @@
 			strRetorno = {};
 			
 			if( not compareNoCase(arguments.acao, "novo")){
-				this.setCadastrar(
+				setCadastrar(
 					arguments.title
 					, arguments.summary
 					, arguments.website
 					, arguments.image
 				);
 			} else if( not compareNoCase(arguments.acao, "atualizar")){
-				this.setAtualizar(
+				setAtualizar(
 					arguments.title
 					, arguments.summary
 					, arguments.website
@@ -153,7 +171,7 @@
 					, arguments.id
 				);
 			} else if( not compareNoCase(arguments.acao, "atualizarImagem")){
-				this.setAtualizarImagem(
+				setAtualizarImagem(
 					arguments.image
 					, arguments.id
 				);
