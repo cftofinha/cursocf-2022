@@ -119,6 +119,33 @@
 		
 	</cffunction>
 	
+	<cffunction name="setExcluir" output="false" access="package" returntype="struct">
+		<cfargument name="id" type="numeric" required="true">
+		
+		<cfset strRetorno = {} />
+		
+		<cftry>
+			<cfquery datasource="dbcursocf">
+				delete from portfolio
+				where id = <cfqueryparam value="#arguments.id#" cfsqltype="cf_sql_integer" maxlength="4">
+				
+			</cfquery>
+			<cfset strRetorno.retorno = "sucesso" />
+			<cfset strRetorno.mensagem = "Registro salvo com sucesso" />
+			
+			<cfcatch type="any">
+				<!---<cfdump var="#cfcatch#">--->
+				<cfset strRetorno.retorno = "erro" />
+				<cfset strRetorno.mensagem = "Erro ao salvar o registro" />
+				<cfset strRetorno.mensagemDetalhe = cfcatch.detail />
+			</cfcatch>
+		
+		</cftry>
+		
+		<cfreturn strRetorno>
+		
+	</cffunction>
+	
 	<cffunction name="fileUpload" access="public" returntype="string">
 		<cfargument name="fileField" required="false" type="string">
 		<cfargument name="fileFieldOld" required="false" type="string">
@@ -174,6 +201,11 @@
 				setAtualizarImagem(
 					arguments.image
 					, arguments.id
+				);
+			}
+			else if( not compareNoCase(arguments.acao, "excluir")){
+				setExcluir(
+					arguments.id
 				);
 			}
 		</cfscript>
