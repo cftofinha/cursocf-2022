@@ -1,8 +1,6 @@
 <cfimport taglib="customTags/" prefix="layout" />
 <layout:page section="home">  	
 <!-- Content Start -->
-<cfset variables.blogPostArray = EntityLoad('BlogPost') />
-<cfset variables.blogPost = entityToQuery(variables.blogPostArray)>
 <!--Card  -->
 <div id="content">
 	<div class="card-pattern">

@@ -9,12 +9,12 @@
 	setEncoding("URL", "UTF-8");
 	setEncoding("FORM", "UTF-8");
 	
-	this.ormEnabled=true;
+	/*this.ormEnabled=true;
 	this.ormSettings={
 		logsql=true,
 		dbcreate="update",
 		cfclocation="com/entity"
-		};
+		};*/
 	this.invokeImplicitAccessor=true;
 	this.sessionCookie.httpOnly=true;
 	this.sessionCookie.timeout='10';
