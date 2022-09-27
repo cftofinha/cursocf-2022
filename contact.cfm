@@ -4,7 +4,7 @@
 <cfparam name="form.message" default="" />
 
 <cfset contactInfo = {address='123 A Street', phonenumber='(919) 555- 3228', email='simon@simonfree.com', skype='mySkypeName'} />
-<cfhttp url="http://www.learncfinaweek.com/twitter.xml" method="get" result="twitterFeed" />
+<!---<cfhttp url="http://www.learncfinaweek.com/twitter.xml" method="get" result="twitterFeed" />--->
 <cfimport taglib="customTags/" prefix="layout" />
 <layout:page section="contact">
 <!-- Content Start -->
@@ -121,13 +121,13 @@
 						<div class="twitter clr">
 							<!-- Twitter Output -->
 							<ul>
-								<cfoutput>
+								<!---<cfoutput>
 									<cfloop array="#xmlParse(twitterFeed.fileContent).statuses.status#" index="feedItem">
 									<li>
 										#dateFormat(feedItem.created_at.xmlText,'mm/dd/yyyy')# - #feedItem.text.xmlText#
 									</li>
 									</cfloop>
-								</cfoutput>
+								</cfoutput>--->
 							</ul>
 						</div>
 					</div>

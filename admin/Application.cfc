@@ -10,11 +10,8 @@ component {
 	this.sessionManagement = true;
 	this.sessionTimeout    = createTimespan( 0, 0, 30, 0 );
 	this.setClientCookies  = true;
-	this.datasource='dbcursocf';
 	
-	setlocale("Portuguese (Brazilian)");
-	setEncoding("URL", "UTF-8");
-	setEncoding("FORM", "UTF-8");
+	this.mappings[ '/coldbox' ] = 'C:/curso-cf/ferramentas/ColdFusion/cfusion/wwwroot/cursocf/admin/coldbox/';
 
 	// Java Integration
 	this.javaSettings = {
@@ -22,8 +19,6 @@ component {
 		loadColdFusionClassPath : true,
 		reloadOnChange          : false
 	};
-	
-	//this.mappings[ '/coldbox' ] = 'C:/curso-cf/ferramentas/ColdFusion/cfusion/wwwroot/cursocf/admin/coldbox/'
 
 	// COLDBOX STATIC PROPERTY, DO NOT CHANGE UNLESS THIS IS NOT THE ROOT OF YOUR COLDBOX APP
 	COLDBOX_APP_ROOT_PATH = getDirectoryFromPath( getCurrentTemplatePath() );
@@ -69,22 +64,6 @@ component {
 
 	public boolean function onMissingTemplate( template ) {
 		return application.cbBootstrap.onMissingTemplate( argumentCollection = arguments );
-	}
-	
-	function onError( any Exception, string EventName){
-		//include 'sorry.cfm';
-		writeDump(arguments.exception);
-		/*var errorEmail = new mail();
-		errorEmail.setTo('you@domain.com');
-		errorEmail.setFrom('system@domain.com');
-		errorEmail.setSubject('An Error has Occured');
-		errorEmail.setBody('
-			Message: #arguments.exception.message# <br />
-			Details: #arguments.exception.detail# <br />
-			Type: #arguments.exception.type# <br />
-		');
-		errorEmail.setType('html');
-		errorEmail.send();*/
 	}
 
 }
