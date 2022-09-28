@@ -2,6 +2,12 @@ In this hands on, we are going to create a more complex query and output that to
 
 **Tags Used**: [\<cfquery>](https://helpx.adobe.com/coldfusion/cfml-reference/coldfusion-tags/tags-p-q/cfquery.html), [\<cfoutput>](https://helpx.adobe.com/coldfusion/cfml-reference/coldfusion-tags/tags-m-o/cfoutput.html), [\<cfcomponent>](https://helpx.adobe.com/coldfusion/developing-applications/building-blocks-of-coldfusion-applications/building-and-using-coldfusion-components.html)
 
+1. Baixar a pasta customTags
+
+1. Baixar o arquivo logout.cfc que está na pasta admin/handlers
+
+1. Baixar as pasta logout que está na pasta admin/views
+
 1. Duplique o arquivo Main.cfm que está dentro da pasta admin\layouts e renomei ele para LoginLayout.cfm
 
 1. Abra o arquivo ModuleConfig.cfc que está dentro da pasta admin\modules_app\login\ e na linha 81 altere conforme abaixo
