@@ -43,7 +43,7 @@
 			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
 	</head>
-<body>
+<body style="margin:80px">
 	
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner">

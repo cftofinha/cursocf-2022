@@ -1,9 +1,9 @@
-<cfset qLoginCheck = createObject("component","login.models.LoginScript")
+<!---<cfset qLoginCheck = createObject("component","login.models.LoginScript")
 							.getLogin(
 								email: "cftofinha@gmail.com",
 								nome: 'Tofinha'
 							) />
-<cfdump var="#qLoginCheck#"><cfabort>
+<cfdump var="#qLoginCheck#"><cfabort>--->
 
 <cfparam name="form.submitted" default="0" />
 <cfparam name="form.emailaddress" default="" />
@@ -12,14 +12,14 @@
 <cfset errorBean = createObject('cursocf.admin.utils.errorBean').init() />
 
 <cfif form.submitted>
-	<!---<cfset qLoginCheck = createObject("component","login.models.LoginService")
-							.getLogin(emailAddresss: trim(form.emailaddress)) />--->
+	<cfset qLoginCheck = createObject("component","login.models.LoginService")
+							.getLogin(emailAddresss: trim(form.emailaddress)) />
 	
-	<cfset qLoginCheck = createObject("component","login.models.LoginScript")
+	<!---<cfset qLoginCheck = createObject("component","login.models.LoginScript")
 							.getLogin(
 								emailaddress: "cftofinha@gmail.com",
 								firstname: 'Tofinha'
-							) />
+							) />--->
 	
 	<!---<cfdump var="#qLoginCheck#"><cfabort>--->
 	

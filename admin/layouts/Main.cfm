@@ -12,8 +12,8 @@
 	section="#variables.menu#"></ct:layout>
 
 	<!---Container And Views --->
-	<div class="container">
-		<div class="vertical-center">
+	<div class="">
+		<div class="">
 			<main class="flex-shrink-0">
 				#renderView()#
 				<!---Modulo ==> #event.getCurrentModule()#--->
