@@ -1,7 +1,6 @@
 <cfcomponent displayname="PostBlog">
 	
 	<cffunction name="getPostsBlog" output="false" access="remote" returntype="query">
-		<cfargument name="condicoesFiltros" type="string" required="true">
 		<cfquery name="qPosts" datasource="dbcursocf">
 			select a.blogpostid as id
 				, (select c.name from blogCategory c, blogpostcategory rl 
@@ -13,8 +12,29 @@
 				, to_char(a.dateposted, 'DD/MM/YYYY') as dataPostagem
 				, to_char(a.createdDateTime, 'DD/MM/YYYY HH12:MI:SS') as dataHoraSistema
 			, (select count(*) from BlogComment bc where a.blogpostid = bc.blogpostid) as qtdComentarios
-		 from blogPost a
-			 where #preserveSingleQuotes(arguments.condicoesFiltros)#
+			from blogPost a
+			order by a.dateposted desc 
+		</cfquery>
+		
+		<cfreturn qPosts>
+		
+	</cffunction>
+	
+	<cffunction name="getPostBlogDetalhe" output="false" access="remote" returntype="query">
+		<cfargument name="idBlog" type="numeric" required="true">
+		<cfquery name="qPosts" datasource="dbcursocf">
+			select a.blogpostid as id
+				, (select c.name from blogCategory c, blogpostcategory rl 
+					where c.blogcategoryid = rl.categoryid and rl.postid = a.blogpostid limit 1)
+					 as nomeCategoria
+				, a.title as titulo
+				, a.summary as resumo
+				, a.body as conteudo
+				, to_char(a.dateposted, 'DD/MM/YYYY') as dataPostagem
+				, to_char(a.createdDateTime, 'DD/MM/YYYY HH12:MI:SS') as dataHoraSistema
+			, (select count(*) from BlogComment bc where a.blogpostid = bc.blogpostid) as qtdComentarios
+			from blogPost a
+			where a.blogpostid = <Cfqueryparam  value="#arguments.idBlog#" cfsqltype="cf_sql_integer" maxlength="4">
 		</cfquery>
 		
 		<cfreturn qPosts>

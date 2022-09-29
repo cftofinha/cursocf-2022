@@ -1,4 +1,6 @@
 <!--- Pull Blog Posts --->
+<cfset qCons = createObject("component","blog.models.Blog").getPostsBlog() />
+<!---<cfdump var="#qCons#"><cfabort>--->
 <cfoutput>
 		<div class="span10">
 			<h2>Blog</h2>
@@ -17,22 +19,24 @@
 					</tr>
 				</thead>
 				<tbody>
-					
+					<cfloop query="qCons">
 						<tr>
 							<td>
 								<!--- Title --->
-									
+								#qCons.titulo#
 							</td>
 							<td>
 								<!--- Date Posted --->
-								
+								#qCons.dataPostagem#
 							</td>
 							<td>
 								<!--- Edit Post --->
-								<a href="#event.getHTMLBaseURL()#index.cfm/blog/alterar-registro/"><i class="icon-edit"></i></a>
+								<a href="#event.getHTMLBaseURL()#index.cfm/blog/alterar-registro/#qCons.id#">
+									<i class="icon-edit"></i>Alterar
+								</a>
 							</td>
 						</tr>
-
+					</cfloop>
 				</tbody>
 		    </table>
 		</div>

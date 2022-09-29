@@ -1,10 +1,17 @@
-﻿<cfparam name="url.id" default="0" />
+﻿<!---<cfdump var="#event.getRoutedStruct()#">--->
+<cfif structKeyExists(event.getRoutedStruct(),"id") and isNumeric(event.getRoutedStruct().id)>
+	<cfset variables.idRegistro = event.getRoutedStruct().id />
+<cfelse>
+	<cfset variables.idRegistro = 0 />
+</cfif>
+<cfset qCons = createObject("component","blog.models.Blog").getPostBlogDetalhe(idBlog: variables.idRegistro) />
+<!---<cfdump var="#qCons#"><cfabort>--->
 <cfparam name="form.submitted" default="0" />
-<cfparam name="form.id" default="0" />
-<cfparam name="form.title" default="" />
-<cfparam name="form.summary" default="" />
-<cfparam name="form.body" default="" />
-<cfparam name="form.datePosted" default="" />
+<cfparam name="form.id" default="#variables.idRegistro#" />
+<cfparam name="form.title" default="#qCons.titulo#" />
+<cfparam name="form.summary" default="#qCons.resumo#" />
+<cfparam name="form.body" default="#qCons.conteudo#" />
+<cfparam name="form.datePosted" default="#qCons.dataPostagem#" />
 <cfparam name="form.categories" default="" />
 
 <cfset errorBean = createObject('cursocf.admin.utils.errorBean').init() />
@@ -42,7 +49,7 @@
 	</cfif>	
 </cfif>
 
-<cfif val(url.id)>
+<cfif val(form.id)>
 	<!--- Get Data --->
 	<!---<cfset form.id = blogPost.id />	
 	<cfset form.title = blogPost.title />
@@ -55,7 +62,7 @@
 <cfoutput>
 		
 		<div class="span10" style="top:150px !important;">
-			<cfif val(url.id)>
+			<cfif val(form.id)>
 				<h2>Edit Blog Post</h2>
 			<cfelse>
 				<h2>Add Blog Post</h2>
@@ -116,7 +123,7 @@
 					</div>
 				</div>
 				<input type="hidden" name="submitted" value="1" />
-				<input type="hidden" name="id" value="#url.id#" />
+				<input type="hidden" name="id" value="#form.id#" />
 			</form>
 		</div>	
 </cfoutput>
