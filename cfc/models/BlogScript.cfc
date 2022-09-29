@@ -38,10 +38,10 @@ component {
 		return qryResult;
 	}
 	
-	public query function getQueryExecute2(){
+	public query function getQueryExecute2(string titulo){
 		qryResult = queryExecute("
 			select * from blogPost
-			where title = :titulo ", {titulo="ColdFusion scheduled tasks"});
+			where title = :paramTitulo ", {paramTitulo=arguments.titulo});
 		
 		return qryResult;
 	}
