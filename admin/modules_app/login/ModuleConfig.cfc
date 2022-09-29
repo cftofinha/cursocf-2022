@@ -78,7 +78,7 @@ component {
 
 		// Layout Settings
 		layoutSettings = {
-			defaultLayout = ""
+			defaultLayout = "LoginLayout"
 		};
 
 		// Custom Declared Points

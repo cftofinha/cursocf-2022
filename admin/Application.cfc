@@ -10,6 +10,7 @@ component {
 	this.sessionManagement = true;
 	this.sessionTimeout    = createTimespan( 0, 0, 30, 0 );
 	this.setClientCookies  = true;
+	this.datasource='dbcursocf';
 	
 	this.mappings[ '/coldbox' ] = 'C:/curso-cf/ferramentas/ColdFusion/cfusion/wwwroot/cursocf/admin/coldbox/';
 
@@ -38,6 +39,8 @@ component {
 			COLDBOX_APP_MAPPING
 		);
 		application.cbBootstrap.loadColdbox();
+		application.datasource = this.datasource;
+		
 		return true;
 	}
 
@@ -48,9 +51,12 @@ component {
 
 	// request start
 	public boolean function onRequestStart( string targetPage ) {
+		if(structKeyExists(url, 'reload') && url.reload eq 2022){
+			onApplicationStart();
+		}
 		// Process ColdBox Request
 		application.cbBootstrap.onRequestStart( arguments.targetPage );
-
+		
 		return true;
 	}
 

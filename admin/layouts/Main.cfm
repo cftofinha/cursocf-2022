@@ -6,13 +6,17 @@
 <cfelse>
 	<cfset variables.menu = "home" />
 </cfif>
-<ct:layout urlBase="#event.getHTMLBaseURL()#" urlBaseComIndex="#event.getHTMLBaseURL()#index.cfm" section="#variables.menu#"></ct:layout>
+<ct:layout 
+	urlBase="#event.getHTMLBaseURL()#" 
+	urlBaseComIndex="#event.getHTMLBaseURL()#index.cfm" 
+	section="#variables.menu#"></ct:layout>
 
 	<!---Container And Views --->
 	<div class="container">
 		<div class="vertical-center">
 			<main class="flex-shrink-0">
 				#renderView()#
+				<!---Modulo ==> #event.getCurrentModule()#--->
 			</main>
 		</div>
 	</div>

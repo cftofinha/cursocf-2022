@@ -56,9 +56,9 @@
 				<a class="brand" href="#attributes.urlBase#/index.cfm">My Website Admin</a>
 				<div class="nav-collapse collapse">
 					<p class="navbar-text pull-right">
-						<cfif structKeyExists(session,'usuario.emailaddress') && len(session.usuario.emailaddress)>
-							Logged in as <a href="#attributes.urlBase#/logout" class="navbar-link">
-								#session.usuario.emailAddress#</a>
+						<cfif structKeyExists(session,'usuario') && len(session.usuario.emailaddress)>
+							Logged in as <a href="#attributes.urlBaseComIndex#/logout" class="navbar-link">
+								#session.usuario.firstname#</a>
 						</cfif>
 					</p>
 					<ul class="nav">
