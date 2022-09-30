@@ -34,6 +34,10 @@
 								<a href="#event.getHTMLBaseURL()#index.cfm/blog/alterar-registro/#qCons.id#">
 									<i class="icon-edit"></i>Alterar
 								</a>
+								<!--- Delete Post --->
+								<a href="#event.getHTMLBaseURL()#index.cfm/blog/excluir-registro/#qCons.id#/excluir">
+									<i class="icon-edit"></i>Excluir
+								</a>
 							</td>
 						</tr>
 					</cfloop>
