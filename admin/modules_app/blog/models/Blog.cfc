@@ -60,6 +60,7 @@
 					, body
 					, dateposted
 					, createdDateTime
+					,deleted
 				)
 				values(
 					 <cfqueryparam value="#arguments.title#" cfsqltype="cf_sql_varchar" maxlength="70">
@@ -67,6 +68,7 @@
 					, <cfqueryparam value="#arguments.body#" cfsqltype="cf_sql_longvarchar">
 					, <cfqueryparam value="#variables.dataPostagem#" cfsqltype="cf_sql_date">
 					, <cfqueryparam value="#now()#" cfsqltype="cf_sql_timestamp">
+					, <cfqueryparam value="0" cfsqltype="cf_sql_varchar" maxlength="1">
 				)
 			</cfquery>
 			<cfset strRetorno.retorno = "sucesso" />

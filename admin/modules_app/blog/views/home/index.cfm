@@ -10,6 +10,7 @@
 						New Blog Post
 					</a>
 			    </form>
+			<!---<cfdump var="#event#">--->
 			<table class="table table-hover">
 				<thead>
 					<tr>
