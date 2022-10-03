@@ -15,6 +15,7 @@
 				<thead>
 					<tr>
 						<th>Title</th>
+						<th>Category</th>
 						<th>Publish Date</th>
 						<th>Actions</th>
 					</tr>
@@ -25,6 +26,10 @@
 							<td>
 								<!--- Title --->
 								#qCons.titulo#
+							</td>
+							<td>
+								<!--- categoria --->
+								#qCons.nomeCategoria#
 							</td>
 							<td>
 								<!--- Date Posted --->
