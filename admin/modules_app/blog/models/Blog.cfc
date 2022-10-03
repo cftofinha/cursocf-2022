@@ -218,18 +218,18 @@
 			strRetorno = {};
 			
 			if( not compareNoCase(arguments.acao, "novo")){
-				this.setCadastrar(
+				retornoMetodo = this.setCadastrar(
 					arguments.title
 					, arguments.summary
 					, arguments.body
 					, arguments.dateposted
 				);
 				this.setRelacionarBlogCategoria(
-					arguments.blogpostid
+					retornoMetodo.idRegistroSalvo
 					, arguments.categoryid
 				);
 			} else if( not compareNoCase(arguments.acao, "atualizar")){
-				this.setAtualizar(
+				retornoMetodo = this.setAtualizar(
 					arguments.blogpostid
 					, arguments.title
 					, arguments.summary
@@ -237,7 +237,7 @@
 					, arguments.dateposted
 				);
 				this.setRelacionarBlogCategoria(
-					arguments.blogpostid
+					retornoMetodo.idRegistroSalvo
 					, arguments.categoryid
 				);
 			} else if( not compareNoCase(arguments.acao, "excluir")){
