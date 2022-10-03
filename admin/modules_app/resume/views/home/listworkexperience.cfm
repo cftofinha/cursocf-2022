@@ -1,17 +1,16 @@
-<div class="span10">
-	<h2>Administrators</h2>
+﻿<div class="span10">
+	<h2>Work Experience</h2>
 	<form class="navbar-form pull-right">
 		<a class="btn btn-primary" href="">
 			<i class="icon-plus icon-white"></i> 
-			New Administrator
+			New Work Experience
 		</a>
 	</form>
 	<table class="table table-hover">
 		<thead>
 			<tr>
-				<th>First Name</th>
-				<th>Last Name</th>
-				<th>Email Address</th>
+				<th>Position</th>
+				<th>Dates</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
@@ -19,14 +18,11 @@
 			
 				<tr>
 					<td>
-						<!---firstname--->
+						<!---title--->
 					</td>
 					<td>
-						<!---lastname--->
-					</td>	
-					<td>
-						<!---emailaddress--->
-					</td>	
+						<!---startDate and endDate--->
+					</td>
 					<td>
 						<a href=""><i class="icon-edit"></i></a>
 					</td>
