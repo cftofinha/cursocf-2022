@@ -6,6 +6,9 @@
 				, (select c.name from blogCategory c, blogpostcategory rl 
 					where c.blogcategoryid = rl.categoryid and rl.postid = a.blogpostid limit 1)
 					 as nomeCategoria
+				, (select c.blogcategoryid from blogCategory c, blogpostcategory rl 
+					where c.blogcategoryid = rl.categoryid and rl.postid = a.blogpostid limit 1)
+					 as idCategoria
 				, a.title as titulo
 				, a.summary as resumo
 				, a.body as conteudo
@@ -28,6 +31,9 @@
 				, (select c.name from blogCategory c, blogpostcategory rl 
 					where c.blogcategoryid = rl.categoryid and rl.postid = a.blogpostid limit 1)
 					 as nomeCategoria
+				, (select c.blogcategoryid from blogCategory c, blogpostcategory rl 
+					where c.blogcategoryid = rl.categoryid and rl.postid = a.blogpostid limit 1)
+					 as idCategoria
 				, a.title as titulo
 				, a.summary as resumo
 				, a.body as conteudo
@@ -71,6 +77,14 @@
 					, <cfqueryparam value="0" cfsqltype="cf_sql_varchar" maxlength="1">
 				)
 			</cfquery>
+			
+			<cfquery name="qIdMax">
+				select blogpostid
+				from blogPost 
+				where title = <cfqueryparam value="#arguments.title#" cfsqltype="cf_sql_varchar" maxlength="70">
+				<!---and dateposted = <cfqueryparam value="#variables.dataPostagem#" cfsqltype="cf_sql_date">--->
+			</cfquery>
+			<cfset strRetorno.idRegistroSalvo = qIdMax.blogpostid />
 			<cfset strRetorno.retorno = "sucesso" />
 			<cfset strRetorno.mensagem = "Registro salvo com sucesso" />
 			
@@ -84,6 +98,46 @@
 		</cftry>
 		
 		<cfreturn strRetorno>
+		
+	</cffunction>
+	
+	<cffunction name="setRelacionarBlogCategoria" output="false" access="package" returntype="struct">
+		<cfargument name="blogpostid" type="numeric" required="true">
+		<cfargument name="categoryid" type="numeric" required="true">
+		
+		<cfset strRetorno1 = {} />
+		
+		<cftry>
+			
+			<cfquery datasource="dbcursocf">
+				delete from blogpostcategory 
+				where postid = <cfqueryparam value="#arguments.blogpostid#" cfsqltype="cf_sql_integer" maxlength="4">
+				and categoryid = <cfqueryparam value="#arguments.categoryid#" cfsqltype="cf_sql_integer" maxlength="4">
+			</cfquery>
+			
+			<cfquery datasource="dbcursocf">
+				insert into blogpostcategory (
+					 postid
+					, categoryid
+				)
+				values(
+					 <cfqueryparam value="#arguments.blogpostid#" cfsqltype="cf_sql_integer" maxlength="4">
+					, <cfqueryparam value="#arguments.categoryid#" cfsqltype="cf_sql_integer" maxlength="4">
+				)
+			</cfquery>
+			<cfset strRetorno1.retorno = "sucesso" />
+			<cfset strRetorno1.mensagem = "Registro salvo com sucesso" />
+			
+			<cfcatch type="any">
+				<!---<cfdump var="#cfcatch#">--->
+				<cfset strRetorno1.retorno = "erro" />
+				<cfset strRetorno1.mensagem = "Erro ao salvar o registro" />
+				<cfset strRetorno1.mensagemDetalhe = cfcatch.detail />
+			</cfcatch>
+		
+		</cftry>
+		
+		<cfreturn strRetorno1>
 		
 	</cffunction>
 	
@@ -108,6 +162,7 @@
 			</cfquery>
 			<cfset strRetorno.retorno = "sucesso" />
 			<cfset strRetorno.mensagem = "Registro salvo com sucesso" />
+			<cfset strRetorno.idRegistroSalvo = arguments.blogpostid />
 			
 			<cfcatch type="any">
 				<!---<cfdump var="#cfcatch#">--->
@@ -153,6 +208,7 @@
 	<cffunction name="salvarRegistro" access="remote" output="false" returntype="struct">
 		<cfargument name="acao" type="string" required="true">
 		<cfargument name="blogpostid" type="numeric" required="true">
+		<cfargument name="categoryid" type="numeric" required="true">
 		<cfargument name="title" type="string" required="true">
 		<cfargument name="summary" type="string" required="true">
 		<cfargument name="body" type="string" required="true">
@@ -168,6 +224,10 @@
 					, arguments.body
 					, arguments.dateposted
 				);
+				this.setRelacionarBlogCategoria(
+					arguments.blogpostid
+					, arguments.categoryid
+				);
 			} else if( not compareNoCase(arguments.acao, "atualizar")){
 				this.setAtualizar(
 					arguments.blogpostid
@@ -175,6 +235,10 @@
 					, arguments.summary
 					, arguments.body
 					, arguments.dateposted
+				);
+				this.setRelacionarBlogCategoria(
+					arguments.blogpostid
+					, arguments.categoryid
 				);
 			} else if( not compareNoCase(arguments.acao, "excluir")){
 				this.setExcluir(

@@ -1,6 +1,6 @@
 ﻿<cfscript>
 	instModelBlog = createObject("component","blog.models.Blog");
-	instModelScript = createObject("component","blog.models.BlogScript");
+	instModelCategorias = createObject("component","blog.models.Categorias");
 	errorBean = createObject('cursocf.admin.utils.errorBean').init();
 </cfscript>
 <!---<cfdump var="#event.getRoutedStruct()#">--->
@@ -15,7 +15,6 @@
 			, body: ""
 			, dateposted: ""
 		) />
-		<!---<cflocation url="" addtoken="false" />--->
 		<script>
 			msg = "\n Sua pagina será redirecionada para a listagem";
 			alert("<cfoutput>#salvarRegistro.mensagem#</cfoutput>" + msg);
@@ -42,33 +41,41 @@
 	
 	<cfif !len(trim(form.datePosted))>
 		<cfset errorBean.addError('You need to provide a release date','details') />
-	</cfif>			
+	</cfif>
+	
+	<cfif !len(trim(form.category))>
+		<cfset errorBean.addError('You need to provide a Category','category') />
+	</cfif>
 	
 	<!--- Only process if there are no errors --->
 	<cfif !errorBean.hasErrors()>
-		<cfset salvarRegistro = instModelScript.salvarRegistro(
+		<cfset salvarRegistro = instModelBlog.salvarRegistro(
 			acao: form.acao
 			, blogpostid: form.id
+			, categoryid: form.category
 			, title: form.title
 			, summary: form.summary
 			, body: form.body
 			, dateposted: form.dateposted
 		) />
-		<cfdump var="#salvarRegistro#">
-		<!---<cfif not compareNoCase(salvarRegistro.retorno, "erro")>
+		
+		<!---<cfdump var="#salvarRegistro#" abort="true" >--->
+		<cfif not compareNoCase(salvarRegistro.retorno, "erro")>
 			<cfdump var="#salvarRegistro#">
 		<cfelse>
+			
 			<script>
 				msg = "\n Sua pagina será redirecionada para a listagem";
 				alert("<cfoutput>#salvarRegistro.mensagem#</cfoutput>" + msg);
 				window.location.href = "<cfoutput>#event.getHTMLBaseURL()#index.cfm/#event.getCurrentModule()#</cfoutput>";
 			</script>
-		</cfif>--->
+		</cfif>
 		
 	</cfif>	
 </cfif>
 
 <cfset qCons = instModelBlog.getPostBlogDetalhe(idBlog: variables.idRegistro) />
+<cfset qCategorias = instModelCategorias.getCategorias() />
 
 <cfif !qCons.recordCount>
 	<cfset variables.acao = "novo" />
@@ -131,9 +138,13 @@
 					<label class="control-label" for="details">Categories</label>
 					<div class="controls">
 							<label class="checkbox">
-							<!---<cfloop array="#categories#" index="category">
-								<input type="checkbox" name="Categories" value="#category.id#" <cfif listfind(form.categories,category.id)>checked</cfif>>#category.name#<br />
-							</cfloop>--->
+							<select name="category">
+							<cfloop query="qCategorias">
+								<option value="#qCategorias.id#" <cfif qCons.idCategoria eq qCategorias.id> selected="selected"</cfif> >
+									#qCategorias.name#
+								</option>
+							</cfloop>
+							</select>
 						</label>
 					</div>
 				</div>
