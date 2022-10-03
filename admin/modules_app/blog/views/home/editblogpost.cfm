@@ -1,5 +1,6 @@
 ﻿<cfscript>
 	instModelBlog = createObject("component","blog.models.Blog");
+	instModelScript = createObject("component","blog.models.BlogScript");
 	errorBean = createObject('cursocf.admin.utils.errorBean').init();
 </cfscript>
 <!---<cfdump var="#event.getRoutedStruct()#">--->
@@ -45,7 +46,7 @@
 	
 	<!--- Only process if there are no errors --->
 	<cfif !errorBean.hasErrors()>
-		<cfset salvarRegistro = instModelBlog.salvarRegistro(
+		<cfset salvarRegistro = instModelScript.salvarRegistro(
 			acao: form.acao
 			, blogpostid: form.id
 			, title: form.title
@@ -53,7 +54,8 @@
 			, body: form.body
 			, dateposted: form.dateposted
 		) />
-		<cfif not compareNoCase(salvarRegistro.retorno, "erro")>
+		<cfdump var="#salvarRegistro#">
+		<!---<cfif not compareNoCase(salvarRegistro.retorno, "erro")>
 			<cfdump var="#salvarRegistro#">
 		<cfelse>
 			<script>
@@ -61,7 +63,7 @@
 				alert("<cfoutput>#salvarRegistro.mensagem#</cfoutput>" + msg);
 				window.location.href = "<cfoutput>#event.getHTMLBaseURL()#index.cfm/#event.getCurrentModule()#</cfoutput>";
 			</script>
-		</cfif>
+		</cfif>--->
 		
 	</cfif>	
 </cfif>
