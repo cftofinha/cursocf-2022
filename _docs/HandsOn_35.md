@@ -12,4 +12,4 @@ In this hands on, we are going to create a more complex query and output that to
 
 1. Em toddos os módulos as funções de Consultar, Detalhar, Cadastrar, Atualizar, Excluir devem ser shamados pelo método SalvarRegistro
 
-**Esta atividade além de valer pontuação para a conclusão do curso, é uma base para o aprendizado de CFCs é uma premissa para evoluirmos no tópico de ORm/Hibernate para a próxima semana**
+**Esta atividade além de valer pontuação para a conclusão do curso, é uma base para o aprendizado de CFCs é uma premissa para evoluirmos no tópico de ORM/Hibernate para a próxima semana**
