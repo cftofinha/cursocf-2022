@@ -1,4 +1,9 @@
-
+<!---<cfset senha = hash("1234567admin", 'SHA-256', 'UTF-8')>
+<cfquery datasource="cursocf-senac">
+	update administrator set
+	password = '#senha#'
+	,
+</cfquery>--->
 <cfscript>
 	param name="url.id" default="";
 	param name="form.firstname" default="Tofinha FCP";

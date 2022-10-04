@@ -11,7 +11,7 @@
 		
 	</cffunction>
 	
-	<cffunction name="getDetalhatRegistro" output="false" access="remote" returntype="query">
+	<cffunction name="getDetalharRegistro" output="false" access="remote" returntype="query">
 		<cfargument name="id" type="numeric" required="true">
 		
 		<cfquery name="qRegistros" datasource="#application.datasource#">

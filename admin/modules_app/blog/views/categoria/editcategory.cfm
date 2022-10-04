@@ -1,5 +1,5 @@
 ﻿<cfscript>
-	instModelBaseCategorias = createObject("component","blog.models.Categorias");
+	instModelCategorias = createObject("component","blog.models.Categorias");
 	errorBean = createObject('cursocf.admin.utils.errorBean').init();
 </cfscript>
 
@@ -50,7 +50,7 @@
 	</cfif>	
 </cfif>
 
-<cfset qCons = instModelCategorias.getDetalgarRegistro(id: variables.idRegistro) />
+<cfset qCons = instModelCategorias.getDetalharRegistro(id: variables.idRegistro) />
 <cfoutput>
 	<div class="span10">
 		<cfif qCons.recordCount>
