@@ -1,7 +1,7 @@
 <cfcomponent displayname="PostBlog">
 	
 	<cffunction name="getPostsBlog" output="false" access="remote" returntype="query">
-		<cfquery name="qPosts" datasource="dbcursocf">
+		<cfquery name="qPosts" datasource="#application.datasource#">
 			select a.blogpostid as id
 				, (select c.name from blogCategory c, blogpostcategory rl 
 					where c.blogcategoryid = rl.categoryid and rl.postid = a.blogpostid limit 1)
@@ -26,7 +26,7 @@
 	
 	<cffunction name="getPostBlogDetalhe" output="false" access="remote" returntype="query">
 		<cfargument name="idBlog" type="numeric" required="true">
-		<cfquery name="qPosts" datasource="dbcursocf">
+		<cfquery name="qPosts" datasource="#application.datasource#">
 			select a.blogpostid as id
 				, (select c.name from blogCategory c, blogpostcategory rl 
 					where c.blogcategoryid = rl.categoryid and rl.postid = a.blogpostid limit 1)
@@ -59,7 +59,7 @@
 		<cfset strRetorno = {} />
 		
 		<cftry>
-			<cfquery datasource="dbcursocf">
+			<cfquery datasource="#application.datasource#">
 				insert into blogPost (
 					 title
 					, summary
@@ -109,13 +109,13 @@
 		
 		<cftry>
 			
-			<cfquery datasource="dbcursocf">
+			<cfquery datasource="#application.datasource#">
 				delete from blogpostcategory 
 				where postid = <cfqueryparam value="#arguments.blogpostid#" cfsqltype="cf_sql_integer" maxlength="4">
 				and categoryid = <cfqueryparam value="#arguments.categoryid#" cfsqltype="cf_sql_integer" maxlength="4">
 			</cfquery>
 			
-			<cfquery datasource="dbcursocf">
+			<cfquery datasource="#application.datasource#">
 				insert into blogpostcategory (
 					 postid
 					, categoryid
@@ -151,7 +151,7 @@
 		<cfset strRetorno = {} />
 		<cfset variables.dataPostagem = lsDateFormat(arguments.dateposted, 'yyyy-mm-dd') />
 		<cftry>
-			<cfquery datasource="dbcursocf">
+			<cfquery datasource="#application.datasource#">
 				update blogPost  set 
 					 title = <cfqueryparam value="#arguments.title#" cfsqltype="cf_sql_varchar" maxlength="70">
 					, summary = <cfqueryparam value="#arguments.summary#" cfsqltype="cf_sql_longvarchar">
@@ -184,7 +184,7 @@
 		
 		<cfset strRetorno = {} />
 		<cftry>
-			<cfquery datasource="dbcursocf">
+			<cfquery datasource="#application.datasource#">
 				update blogPost  set 
 					 deleted = <cfqueryparam value="1" cfsqltype="cf_sql_varchar" maxlength="1">
 				where blogpostid = <cfqueryparam value="#arguments.blogpostid#" cfsqltype="cf_sql_integer" maxlength="4">

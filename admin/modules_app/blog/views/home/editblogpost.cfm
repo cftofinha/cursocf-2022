@@ -139,6 +139,7 @@
 					<div class="controls">
 							<label class="checkbox">
 							<select name="category">
+							<option value="">Selecione uma categoria</option>
 							<cfloop query="qCategorias">
 								<option value="#qCategorias.id#" <cfif qCons.idCategoria eq qCategorias.id> selected="selected"</cfif> >
 									#qCategorias.name#

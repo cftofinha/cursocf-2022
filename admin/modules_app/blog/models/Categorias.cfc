@@ -1,10 +1,23 @@
 <cfcomponent displayname="Categorias">
 	
 	<cffunction name="getCategorias" output="false" access="remote" returntype="query">
-		<cfquery name="qRegistros" datasource="dbcursocf">
+		<cfquery name="qRegistros" datasource="#application.datasource#">
 			select blogcategoryid as id, name 
 			from blogCategory
 			order by name asc 
+		</cfquery>
+		
+		<cfreturn qRegistros>
+		
+	</cffunction>
+	
+	<cffunction name="getDetalhatRegistro" output="false" access="remote" returntype="query">
+		<cfargument name="id" type="numeric" required="true">
+		
+		<cfquery name="qRegistros" datasource="#application.datasource#">
+			select blogcategoryid as id, name 
+			from blogCategory
+			where blogcategoryid = <cfqueryparam value="#arguments.id#" cfsqltype="cf_sql_integer" maxlength="4">
 		</cfquery>
 		
 		<cfreturn qRegistros>
@@ -17,7 +30,7 @@
 		<cfset strRetorno = {} />
 		
 		<cftry>
-			<cfquery datasource="dbcursocf">
+			<cfquery datasource="#application.datasource#">
 				insert into blogCategory (
 					 name
 				)
@@ -48,7 +61,7 @@
 		<cfset strRetorno = {} />
 		<cfset variables.dataPostagem = lsDateFormat(arguments.dateposted, 'yyyy-mm-dd') />
 		<cftry>
-			<cfquery datasource="dbcursocf">
+			<cfquery datasource="#application.datasource#">
 				update blogCategory  set 
 					 name = <cfqueryparam value="#arguments.name#" cfsqltype="cf_sql_varchar" maxlength="70">
 				where blogcategoryid = <cfqueryparam value="#arguments.blogcategoryid#" cfsqltype="cf_sql_integer" maxlength="4">
@@ -74,7 +87,7 @@
 		
 		<cfset strRetorno = {} />
 		<cftry>
-			<cfquery datasource="dbcursocf">
+			<cfquery datasource="#application.datasource#">
 				delete from blogCategory
 				where blogcategoryid = <cfqueryparam value="#arguments.blogcategoryid#" cfsqltype="cf_sql_integer" maxlength="4">
 			</cfquery>
