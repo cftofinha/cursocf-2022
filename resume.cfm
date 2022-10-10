@@ -2,7 +2,7 @@
 <cfset mySkillSet = instCFC.getMySkillSet()>
 <cfset variables.condicoes = " 0 = 0" />
 <cfset myResume = instCFC.getMyResume(condicoesFiltros: variables.condicoes) />
-
+<!---<cfdump var="#mySkillSet#"><cfabort>--->
 <cfimport taglib="customTags/" prefix="layout" />
 <layout:page section="resume">	
 <!-- Content Start -->

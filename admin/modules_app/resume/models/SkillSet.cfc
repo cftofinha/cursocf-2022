@@ -3,7 +3,8 @@
 	<cffunction name="getMySkillSet" returntype="query" access="public">
 		<cfquery name="qMySkillSet" datasource="#application.datasource#">
 			SELECT
-				id, name
+				id
+				, name
 			FROM
 				skillset
 			ORDER BY
@@ -12,11 +13,13 @@
 		<cfreturn qMySkillSet>
 	</cffunction>
 	
-	<cffunction name="getDetalhatRegistro" output="false" access="remote" returntype="query">
+	<cffunction name="getDetalharRegistro" output="false" access="remote" returntype="query">
 		<cfargument name="id" type="numeric" required="true">
 		
 		<cfquery name="qRegistros" datasource="#application.datasource#">
-			select id name 
+			select 
+				id
+				, name 
 			from skillset
 			where id = <cfqueryparam value="#arguments.id#" cfsqltype="cf_sql_integer" maxlength="4">
 		</cfquery>
@@ -60,7 +63,6 @@
 		<cfargument name="name" type="string" required="true">
 		
 		<cfset strRetorno = {} />
-		<cfset variables.dataPostagem = lsDateFormat(arguments.dateposted, 'yyyy-mm-dd') />
 		<cftry>
 			<cfquery datasource="#application.datasource#">
 				update skillset  set 

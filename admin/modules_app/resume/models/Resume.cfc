@@ -6,8 +6,8 @@
 			select 
 				id,
 				title,
-				startDate,
-				endDate,
+				to_char(startDate, 'DD/MM/YYYY') as startDate,
+				to_char(endDate, 'DD/MM/YYYY') as endDate,
 				details,
 				type
 			from resume
@@ -17,15 +17,25 @@
 		<cfreturn qMyResume>
 	</cffunction>
 	
-	<cffunction name="getDetalhatRegistro" output="false" access="remote" returntype="query">
+	<cffunction name="getTypes" returntype="query" access="public">
+		<cfquery name="qTypes" datasource="#application.datasource#">
+			select 
+				distinct type
+			from resume
+			order by type asc 
+		</cfquery>
+		<cfreturn qTypes>
+	</cffunction>
+	
+	<cffunction name="getDetalharRegistro" output="false" access="remote" returntype="query">
 		<cfargument name="id" type="numeric" required="true">
 		
 		<cfquery name="qRegistros" datasource="#application.datasource#">
 			select 
 				id,
 				title,
-				startDate,
-				endDate,
+				to_char(startDate, 'DD/MM/YYYY') as startDate,
+				to_char(endDate, 'DD/MM/YYYY') as endDate,
 				details,
 				type
 			from resume
@@ -37,7 +47,6 @@
 	</cffunction>
 	
 	<cffunction name="setCadastrar" output="false" access="package" returntype="struct">
-		<cfargument name="name" type="string" required="true">
 		<cfargument name="title" type="string" required="true">
 		<cfargument name="startDate" type="string" required="true">
 		<cfargument name="endDate" type="string" required="true">
@@ -83,7 +92,6 @@
 	
 	<cffunction name="setAtualizar" output="false" access="package" returntype="struct">
 		<cfargument name="id" type="numeric" required="true">
-		<cfargument name="name" type="string" required="true">
 		<cfargument name="title" type="string" required="true">
 		<cfargument name="startDate" type="string" required="true">
 		<cfargument name="endDate" type="string" required="true">
@@ -147,7 +155,6 @@
 	<cffunction name="salvarRegistro" access="remote" output="false" returntype="struct">
 		<cfargument name="acao" type="string" required="true">
 		<cfargument name="id" type="numeric" required="true">
-		<cfargument name="name" type="string" required="true">
 		<cfargument name="title" type="string" required="true">
 		<cfargument name="startDate" type="string" required="true">
 		<cfargument name="endDate" type="string" required="true">
@@ -160,7 +167,7 @@
 			if( not compareNoCase(arguments.acao, "novo")){
 				this.setCadastrar(
 					arguments.title
-					, carguments.startDate
+					, arguments.startDate
 					, arguments.endDate
 					, arguments.details
 					, arguments.type
