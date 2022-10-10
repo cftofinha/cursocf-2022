@@ -13,6 +13,13 @@ component {
 	this.datasource='dbcursocf';
 	
 	this.mappings[ '/coldbox' ] = 'C:/curso-cf/ferramentas/ColdFusion/cfusion/wwwroot/cursocf/admin/coldbox/';
+	
+	this.ormEnabled=true;
+	this.ormSettings={
+		logsql=true,
+		dbcreate="update",
+		cfclocation="com/entity"
+	};
 
 	// Java Integration
 	this.javaSettings = {
@@ -53,6 +60,7 @@ component {
 	public boolean function onRequestStart( string targetPage ) {
 		if(structKeyExists(url, 'reload') && url.reload eq 2022){
 			onApplicationStart();
+			ormReload();
 		}
 		// Process ColdBox Request
 		application.cbBootstrap.onRequestStart( arguments.targetPage );
