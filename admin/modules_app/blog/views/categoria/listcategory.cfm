@@ -1,4 +1,5 @@
 ﻿<cfset qCons = createObject("component","blog.models.Categorias").getCategorias() />
+<cfset qCons = entityLoad("Categorias") />
 <!--- Pull Categories --->
 <cfoutput>
 	<div class="span10">

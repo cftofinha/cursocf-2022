@@ -1,20 +1,28 @@
-﻿<cfimport taglib="../../customTags" prefix="ct" />
-<ct:securityCheck redirectPage="#cgi.script_name#"/>
+﻿<cfscript>
+	param name="form.submitted" default="0";
+	errorBean = createObject('cursocf.admin.utils.errorBean').init();
+	variables.linkListagem = event.getHTMLBaseURL() & "index.cfm/" & event.getCurrentModule();
+	variables.linkActionForm = event.getHTMLBaseURL() & "index.cfm/" & event.getCurrentRoutedURL();
+	
+</cfscript>
 
-<cfparam name="url.id" default="0" />
-<cfparam name="form.submitted" default="0" />
-<cfparam name="form.id" default="0" />
-<cfparam name="form.title" default="" />
-<cfparam name="form.summary" default="" />
-<cfparam name="form.website" default="" />
-<cfparam name="form.image" default="" />
-
-<cfset errorBean = createObject('learncfinaweek.www.admin.cfc.errorBean').init() />
+<cfif structKeyExists(event.getRoutedStruct(),"id") and isNumeric(event.getRoutedStruct().id)>
+	<cfset qDados = entityLoadByPK("Portfolio", event.getRoutedStruct().id) />
+	<cfset variables.idRegistro = event.getRoutedStruct().id />
+	<cfif structKeyExists(event.getRoutedStruct(),"acao") && not compareNoCase(event.getRoutedStruct().acao,"excluir")>
+		<cfset entityDelete(qDados) />
+		<cfset ormFlush() />
+			<script>
+				msg = "\n Sua pagina será redirecionada para a listagem";
+				alert("Registro Excluído com sucesso");
+				window.location.href = "<cfoutput>#variables.linkListagem#</cfoutput>";
+			</script>
+	</cfif>
+<cfelse>
+	<cfset variables.idRegistro = 0 />
+</cfif>
 
 <cfif form.submitted>
-
-	<!--- check if data is valid--->
-		
 	<cfif !len(trim(form.title))>
 		<cfset errorBean.addError('A Title is required','title') />
 	</cfif>	
@@ -22,7 +30,7 @@
 	
 	<cfif !errorBean.hasErrors()>
 		<!--- Image Upload Process --->
-		<cfif len(trim(form.image))>	
+		<!---<cfif len(trim(form.image))>	
 			<cffile action="upload" filefield="image" destination="#getTempDirectory()#" nameconflict="makeunique"  />
 			<cfif listFindNoCase(getReadableImageFormats(),cffile.serverFileExt)>
 				<cfset imageObject = imageRead(cffile.serverDirectory & '/' & cffile.serverfile) />
@@ -32,73 +40,33 @@
 			<cfelse>
 				<cfset form.image='' />
 			</cfif>	 	
-		</cfif>
-		<!--- Save Portfolio --->	
-		<cfif val(form.id)>
-			<cfquery>
-				UPDATE
-					portfolio
-				SET
-					title = <cfqueryparam value="#trim(form.title)#" cfsqltype="cf_sql_varchar" />,
-					summary = <cfqueryparam value="#trim(form.summary)#" cfsqltype="cf_sql_varchar" />,
-					website = <cfqueryparam value="#trim(form.website)#" cfsqltype="cf_sql_varchar" />
-					<cfif len(form.image)>
-					, image=<cfqueryparam value="#trim(form.image)#" cfsqltype="cf_sql_varchar" />	
-					</cfif>	
-				WHERE
-					id = <cfqueryparam value="#form.id#" cfsqltype="cf_sql_integer" />	
-			</cfquery>
+		</cfif>--->
+		<!--- Save Portfolio --->
+		<cfif form.id eq 0>
+			<cfset qDados = entityNew("Portfolio") />
 		<cfelse>
-			<cfquery>
-				INSERT INTO
-					portfolio (
-					title,
-					summary,
-					website
-					<cfif len(form.image)>
-						, image
-					</cfif>		
-				) VALUES (
-					<cfqueryparam value="#trim(form.title)#" cfsqltype="cf_sql_varchar" />,
-					<cfqueryparam value="#trim(form.summary)#" cfsqltype="cf_sql_varchar" />,
-					<cfqueryparam value="#trim(form.website)#" cfsqltype="cf_sql_varchar" />
-					<cfif len(form.image)>
-						<cfqueryparam value="#trim(form.image)#" cfsqltype="cf_sql_varchar" />
-					</cfif>	
-				)
-			</cfquery>
+			<cfset qDados = entityLoadByPK("Portfolio", form.id) />
 		</cfif>
+		<cfset qDados.setTitle(form.title) />
+		<cfset qDados.setSummary(form.summary) />
+		<cfset qDados.setWebsite(form.website) />
+		<!---<cfset qDados.setImage("") />--->
+		<cfset entitySave(qDados) />
+		<cfset ormFlush() />
 		
-		<cflocation url="listportfolio.cfm?message=#urlencodedformat('Portfolio Saved')#" addtoken="false" />
+		<script>
+			msg = "\n Sua pagina será redirecionada para a listagem";
+			alert("Registro Salvo com sucesso");
+			window.location.href = "<cfoutput>#variables.linkListagem#</cfoutput>";
+		</script>
+		
 	</cfif>	
 </cfif>
 
-<cfif val(url.id)>
-	<cfquery name="qPortfolio">
-		SELECT
-			id,
-			title,
-			summary,
-			website,
-			image
-		FROM
-			portfolio
-		WHERE
-			id=<cfqueryparam value="#url.id#" cfsqltype="cf_sql_integer" />	
-	</cfquery>
-	
-	<cfset form.id = qPortfolio.id />
-	<cfset form.title = qPortfolio.title />
-	<cfset form.summary = qPortfolio.summary />
-	<cfset form.website = qPortfolio.website />
-	<cfset form.image = qPortfolio.image />
-</cfif>
-
 <cfoutput>
-	<ct:layout section="portfolio">
 		
 		<div class="span10">
-			<cfif val(url.id)>
+			<cfif isDefined('qDados')>
 				<h2>Edit Portfolio</h2>
 			<cfelse>
 				<h2>Add Portfolio</h2>
@@ -116,23 +84,23 @@
 			    </div>
 			</cfif>
 			
-			<form class="form-horizontal" action="#cgi.script_name#" method="post" enctype="multipart/form-data">
+			<form class="form-horizontal" action="#variables.linkActionForm#" method="post" enctype="multipart/form-data">
 				<div class="control-group">
 					<label class="control-label" for="title">Title</label>
 					<div class="controls">
-						<input type="text" id="title" name="title" value="#form.title#">
+						<input type="text" id="title" name="title" value="<cfif isDefined('qDados')>#qDados.getTitle()#</cfif>">
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="summary">Summary</label>
 					<div class="controls">
-						<textarea rows="3" id="summary" name="summary">#form.summary#</textarea>
+						<textarea rows="3" id="summary" name="summary"><cfif isDefined('qDados')>#qDados.getSummary()#</cfif></textarea>
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="website">Website</label>
 					<div class="controls">
-						<input type="text" id="website" name="website" value="#form.website#">
+						<input type="text" id="website" name="website" value="<cfif isDefined('qDados')>#qDados.getWebsite()#</cfif>">
 					</div>
 				</div>
 				<div class="control-group">
@@ -147,8 +115,7 @@
 					</div>
 				</div>
 				<input type="hidden" name="submitted" value="1" />
-				<input type="hidden" name="id" value="#url.id#" />
+				<input type="hidden" name="id" value="#variables.idRegistro#" />
 			</form>
 		</div>	
-	</ct:layout>	
 </cfoutput>

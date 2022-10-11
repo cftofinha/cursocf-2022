@@ -1,24 +1,13 @@
-<cfimport taglib="../../customTags" prefix="ct" />
-<ct:securityCheck redirectPage="#cgi.script_name#"/>
-
-<cfset adminPath = createObject('learncfinaweek.www.admin.cfc.system').getBasePath(cgi.script_name) />
-
-<cfquery name="qPortfolio">
-	SELECT
-		id,
-		title,
-		website
-	FROM
-		portfolio
-	ORDER BY
-		title
-</cfquery>
-
-<ct:layout section="portfolio">
+<cfscript>
+	qCons = entityLoad("Portfolio")
+	variables.linkExcluir = event.getHTMLBaseURL() & "index.cfm/" & event.getCurrentModule() & "/excluir-registro";
+	variables.linkEdicao = event.getHTMLBaseURL() & "index.cfm/" & event.getCurrentModule() & "/alterar-registro";
+	variables.linkNovo = event.getHTMLBaseURL() & "index.cfm/" & event.getCurrentModule() & "/novo-registro";
+</cfscript>
+<cfoutput>
 	<div class="span10">
-		<h2>Skillsets</h2>
 		    <form class="navbar-form pull-right">
-		    	<a class="btn btn-primary" href="<cfoutput>#adminPath#</cfoutput>/content/portfolio/editportfolio.cfm">
+		    	<a class="btn btn-primary" href="#variables.linkNovo#">
 					<i class="icon-plus icon-white"></i> 
 					New Portfolio
 				</a>
@@ -32,20 +21,27 @@
 				</tr>
 			</thead>
 			<tbody>
-				<cfoutput query="qPortfolio">
+				<cfloop array="#qCons#" index="p">
 					<tr>
 						<td>
-							#qPortfolio.title#
+							#p.getTitle()#	
 						</td>
 						<td>
-							#qPortfolio.website#
+							#p.getWebsite()#
 						</td>
 						<td>
-							<a href="#adminPath#/content/portfolio/editportfolio.cfm?id=#qPortfolio.id#"><i class="icon-edit"></i></a>
+							<a href="#variables.linkEdicao#/#p.getId()#">
+								<i class="icon-edit"></i>
+								Alterar
+							</a>
+							<a href="#variables.linkExcluir#/#p.getId()#/excluir">
+								<i class="icon-edit"></i>
+								Excluir
+							</a>
 						</td>
 					</tr>
-				</cfoutput>
+				</cfloop>
 			</tbody>
 	    </table>
 	</div>	
-</ct:layout>	
+</cfoutput>

@@ -4,7 +4,6 @@
 	errorBean = createObject('cursocf.admin.utils.errorBean').init();
 </cfscript>
 <!---<cfdump var="#event.getRoutedStruct()#">--->
-<cfif structKeyExists(event.getRoutedStruct(),"id") and isNumeric(event.getRoutedStruct().id)>
 	<cfset variables.idRegistro = event.getRoutedStruct().id />
 	<cfif structKeyExists(event.getRoutedStruct(),"acao") && not compareNoCase(event.getRoutedStruct().acao,"excluir")>
 		<cfset salvarRegistro = instModelBlog.salvarRegistro(
@@ -51,7 +50,7 @@
 	<cfif !errorBean.hasErrors()>
 		<cfset salvarRegistro = instModelBlog.salvarRegistro(
 			acao: form.acao
-			, blogpostid: form.id
+			, salvarRegistro.setblogpostid: form.id
 			, categoryid: form.category
 			, title: form.title
 			, summary: form.summary

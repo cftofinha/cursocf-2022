@@ -1,3 +1,36 @@
+<cfscript>
+	param name="url.acao" default="";
+	param name="url.id" default="";
+	ormReload();
+	
+	/*test = ORMExecuteQuery("select count(*) from Portfolio", [], true);
+	writeDump(test);*/
+	
+	if(not compareNoCase(url.acao, "novo")){
+		qSalvar = entityNew("Portfolio");
+		
+	} else if (not compareNoCase(url.acao, "atualizar") && isNumeric(url.id)){
+		qSalvar = entityLoadByPK("Portfolio", url.id);
+	}
+	
+	qSalvar.setTitle("Testes xpto");
+	qSalvar.setSummary("Sumary xpto");
+	qSalvar.setWebsite("www.xpto.com");
+	qSalvar.setImage("");
+	
+	entitySave(qSalvar);
+	
+	ormFlush();
+	
+	
+	
+/*	portfolios = entityload("Portfolio");
+	writeDump(portfolios);
+	
+	categorias = entityload("PortfolioCategory");
+	writeDump(categorias);
+	*/
+</cfscript>
 <cfoutput>
 <div class="text-center card shadow-sm bg-light border border-5 border-white">
 	<div class="card-body">
@@ -20,4 +53,5 @@
 		</div>
 	</div>
 </div>
+
 </cfoutput>
