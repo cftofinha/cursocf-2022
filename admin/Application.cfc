@@ -54,6 +54,7 @@ component {
 	// application end
 	public void function onApplicationEnd( struct appScope ) {
 		arguments.appScope.cbBootstrap.onApplicationEnd( arguments.appScope );
+		application.datasource = this.datasource;
 	}
 
 	// request start

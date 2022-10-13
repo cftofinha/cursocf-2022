@@ -1,4 +1,4 @@
-component persistent="true" {
+component table="administrator" persistent="true" {
 	
 	property name="id" column="id" fieldtype="id" generator="increment";
 	property name="firstname" ormtype="string" ;

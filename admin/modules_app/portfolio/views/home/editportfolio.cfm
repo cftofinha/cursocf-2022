@@ -3,7 +3,10 @@
 	errorBean = createObject('cursocf.admin.utils.errorBean').init();
 	variables.linkListagem = event.getHTMLBaseURL() & "index.cfm/" & event.getCurrentModule();
 	variables.linkActionForm = event.getHTMLBaseURL() & "index.cfm/" & event.getCurrentRoutedURL();
-	
+	variables.pastaBase = expandPath('/') & "cursocf\assets\images\portfolio";
+	categorias = entityLoad("PortfolioCategory");
+	qCategorias = entityToQuery(categorias);
+	//writeDump(qCategorias); 
 </cfscript>
 
 <cfif structKeyExists(event.getRoutedStruct(),"id") and isNumeric(event.getRoutedStruct().id)>
@@ -30,29 +33,47 @@
 	
 	<cfif !errorBean.hasErrors()>
 		<!--- Image Upload Process --->
-		<!---<cfif len(trim(form.image))>	
-			<cffile action="upload" filefield="image" destination="#getTempDirectory()#" nameconflict="makeunique"  />
-			<cfif listFindNoCase(getReadableImageFormats(),cffile.serverFileExt)>
-				<cfset imageObject = imageRead(cffile.serverDirectory & '/' & cffile.serverfile) />
-				<cfset imageSCaleToFit(imageObject,'202','131') />
-				<cfset imageWrite(imageObject,expandpath('../../../assets/images/portfolio/#cffile.serverfile#')) />
-				<cfset form.image = cffile.serverfile />
-			<cfelse>
-				<cfset form.image='' />
-			</cfif>	 	
-		</cfif>--->
-		<!--- Save Portfolio --->
-		<cfif form.id eq 0>
-			<cfset qDados = entityNew("Portfolio") />
+		<cfif len(trim(form.image))>
+			<cftry>
+				<cffile action="upload" filefield="image" destination="#variables.pastaBase#" nameconflict="makeunique"  />
+				
+				<cfif listFindNoCase(getReadableImageFormats(),cffile.serverFileExt)>
+					<cfset imageObject = imageRead(cffile.serverDirectory & '/' & cffile.serverfile) />
+					<cfset imageSCaleToFit(imageObject,'202','131') />
+					<cfset imageWrite(imageObject,"#variables.pastaBase#/#cffile.serverfile#") />
+					<cfset form.image = cffile.serverfile />
+				<cfelse>
+					<cfset form.image = form.imageOld />
+				</cfif>
+				
+				<cfcatch type="any">
+					<cfdump var="#cfcatch#">
+					<cfabort>
+				</cfcatch>
+			</cftry>
 		<cfelse>
-			<cfset qDados = entityLoadByPK("Portfolio", form.id) />
+			<cfset form.image = form.imageOld />
 		</cfif>
-		<cfset qDados.setTitle(form.title) />
-		<cfset qDados.setSummary(form.summary) />
-		<cfset qDados.setWebsite(form.website) />
-		<!---<cfset qDados.setImage("") />--->
-		<cfset entitySave(qDados) />
-		<cfset ormFlush() />
+		<!--- Save Portfolio --->
+			<cftry>
+				<cfif form.id eq 0>
+					<cfset qDados = entityNew("Portfolio") />
+				<cfelse>
+					<cfset qDados = entityLoadByPK("Portfolio", form.id) />
+				</cfif>
+				<cfset categoria = entityLoad("PortfolioCategory", form.categoryId, true) />
+				<!---<cfdump var="#categoria#"><cfabort>--->
+				<cfset qDados.setTitle(form.title) />
+				<cfset qDados.setSummary(form.summary) />
+				<cfset qDados.setWebsite(form.website) />
+				<cfset qDados.setImage(form.image) />
+				<!---<cfset qDados.setCategorias(categoria) />--->
+				<cfset entitySave(qDados) />
+				<cfset ormFlush() />
+			<cfcatch type="any">
+				<cfdump var="#cfcatch#"><cfabort>
+			</cfcatch>
+			</cftry>
 		
 		<script>
 			msg = "\n Sua pagina será redirecionada para a listagem";
@@ -71,7 +92,7 @@
 			<cfelse>
 				<h2>Add Portfolio</h2>
 			</cfif>
-			
+			<cfdump var="#variables.pastaBase#">
 			<cfif errorBean.hasErrors()>
 			    <div class="alert alert-error">
 			    	<strong>Error</strong><br />
@@ -104,9 +125,21 @@
 					</div>
 				</div>
 				<div class="control-group">
+					<label class="control-label" for="website">Categorys</label>
+					<div class="controls">
+						<select name="categoryId">
+							<option value="">Selecione a Categoria</option>
+							<cfloop query="qCategorias">
+								<option value="#qCategorias.id#" <cfif isDefined('qDados') and not isNull(qDados.getCategorias()) and qDados.getCategorias().getId() eq qCategorias.id> selected="selected"</cfif> >#qCategorias.name#</option>
+							</cfloop>
+						</select>
+					</div>
+				</div>
+				<div class="control-group">
 					<label class="control-label" for="image">Image</label>
 					<div class="controls">
 						<input type="file" id="image" name="image" value="">
+						<input type="hidden" id="imageOld" name="imageOld" value="<cfif isDefined('qDados')>#qDados.getImage()#</cfif>">
 					</div>
 				</div>
 				<div class="control-group">

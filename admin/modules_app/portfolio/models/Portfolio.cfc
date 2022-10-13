@@ -2,7 +2,7 @@
 	
 	<cffunction name="getPortfolio" output="false" access="remote" returntype="query">
 		<cfargument name="condicoesFiltros" type="string" required="true">
-		<cfquery name="qPortfolio" datasource="dbcursocf">
+		<cfquery name="qPortfolio" datasource="#application.datasource#">
 			select a.id
 				, a.title
 				, a.summary
@@ -25,7 +25,7 @@
 		<cfset strRetorno = {} />
 		
 		<cftry>
-			<cfquery datasource="dbcursocf">
+			<cfquery datasource="#application.datasource#">
 				insert into portfolio (
 					 title
 					, summary
@@ -65,7 +65,7 @@
 		<cfset strRetorno = {} />
 		
 		<cftry>
-			<cfquery datasource="dbcursocf">
+			<cfquery datasource="#application.datasource#">
 				update portfolio set 
 					 title = <cfqueryparam value="#arguments.title#" cfsqltype="cf_sql_varchar">
 					, summary = <cfqueryparam value="#arguments.summary#" cfsqltype="cf_sql_longvarchar">
@@ -97,7 +97,7 @@
 		<cfset strRetorno = {} />
 		
 		<cftry>
-			<cfquery datasource="dbcursocf">
+			<cfquery datasource="#application.datasource#">
 				update portfolio set 
 					image = <cfqueryparam value="#arguments.image#" cfsqltype="cf_sql_char">
 				where id = <cfqueryparam value="#arguments.id#" cfsqltype="cf_sql_integer" maxlength="4">
@@ -125,7 +125,7 @@
 		<cfset strRetorno = {} />
 		
 		<cftry>
-			<cfquery datasource="dbcursocf">
+			<cfquery datasource="#application.datasource#">
 				delete from portfolio
 				where id = <cfqueryparam value="#arguments.id#" cfsqltype="cf_sql_integer" maxlength="4">
 				

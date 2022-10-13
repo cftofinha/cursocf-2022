@@ -1,8 +1,27 @@
-﻿<cfparam name="url.id" default="0" />
-<cfset errorBean = createObject('admin.cfc.errorBean').init() />
+﻿<cfscript>
+	param name="form.submitted" default="0";
+	errorBean = createObject('cursocf.admin.utils.errorBean').init();
+	variables.linkListagem = event.getHTMLBaseURL() & "index.cfm/" & event.getCurrentModule();
+	variables.linkActionForm = event.getHTMLBaseURL() & "index.cfm/" & event.getCurrentRoutedURL(); 
+</cfscript>
+
+<cfif structKeyExists(event.getRoutedStruct(),"id") and isNumeric(event.getRoutedStruct().id)>
+	<cfset qDados = entityLoadByPK("Administrator", event.getRoutedStruct().id) />
+	<cfset variables.idRegistro = event.getRoutedStruct().id />
+	<cfif structKeyExists(event.getRoutedStruct(),"acao") && not compareNoCase(event.getRoutedStruct().acao,"excluir")>
+		<cfset entityDelete(qDados) />
+		<cfset ormFlush() />
+			<script>
+				msg = "\n Sua pagina será redirecionada para a listagem";
+				alert("Registro Excluído com sucesso");
+				window.location.href = "<cfoutput>#variables.linkListagem#</cfoutput>";
+			</script>
+	</cfif>
+<cfelse>
+	<cfset variables.idRegistro = 0 />
+</cfif>
 
 <cfif form.submitted>
-
 	<!--- check if data is valid--->
 		
 	<cfif !len(trim(form.firstname))>
@@ -26,17 +45,45 @@
 	</cfif>				
 	
 	<cfif !errorBean.hasErrors()>
-		<cfif len(trim(form.password))>
-			<cfset salt=Hash(GenerateSecretKey("AES"), "SHA-256", "UTF-8") />
-			<cfset password = Hash(salt & form.password, "SHA-256", "UTF-8") />
-		</cfif>	
+		
+		<cftry>
+			<cfif form.id eq 0>
+				<cfset qDados = entityNew("Administrator") />
+			<cfelse>
+				<cfset qDados = entityLoadByPK("Administrator", form.id) />
+			</cfif>
+			<cfset qDados.setFirstname(form.firstname) />
+			<cfset qDados.setlastname(form.lastname) />
+			<cfset qDados.setEmailaddress(form.emailaddress) />
+			
+			<cfif len(trim(form.password))>
+				<cfset variables.salt = hash(GenerateSecretKey("AES"), "SHA-256", "UTF-8") />
+				<cfset variables.password = hash(salt & form.password, "SHA-256", "UTF-8") />
+				<cfset qDados.setPassword(variables.password) />
+				<cfset qDados.setSalt(variables.salt) />
+			</cfif>
+			
+			<cfset entitySave(qDados) />
+			<cfset ormFlush() />
+			
+			<script>
+				msg = "\n Sua pagina será redirecionada para a listagem";
+				alert("Registro Salvo com sucesso");
+				window.location.href = "<cfoutput>#variables.linkListagem#</cfoutput>";
+			</script>
+			
+			<cfcatch type="any">
+				<cfdump var="#cfcatch#"><cfabort>
+			</cfcatch>
+		</cftry>
+			
 		
 	</cfif>	
 </cfif>
 
 <cfoutput>
 	<div class="span10">
-		<cfif val(url.id)>
+		<cfif isDefined('qDados')>
 			<h2>Edit Administrator</h2>
 		<cfelse>
 			<h2>Add Administrator</h2>
@@ -56,24 +103,24 @@
 		
 		<form class="form-horizontal" action="" method="post">
 			<input type="hidden" name="submitted" value="1" />
-			<input type="hidden" name="id" value="#url.id#" />
+			<input type="hidden" name="id" value="#variables.idRegistro#" />
 			
 			<div class="control-group">
 				<label class="control-label" for="firstname">First Name</label>
 				<div class="controls">
-					<input type="text" id="firstname" name="firstname" value="">
+					<input type="text" id="firstname" name="firstname" value="<cfif isDefined('qDados')>#qDados.getFirstname()#</cfif>">
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" for="lastname">Last Name</label>
 				<div class="controls">
-					<input type="text" id="lastname" name="lastname" value="">
+					<input type="text" id="lastname" name="lastname" value="<cfif isDefined('qDados')>#qDados.getLastname()#</cfif>">
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" for="emailAddress">Email Address</label>
 				<div class="controls">
-					<input type="text" id="emailAddress" name="emailAddress" value="">
+					<input type="text" id="emailAddress" name="emailAddress" value="<cfif isDefined('qDados')>#qDados.getEmailAddress()#</cfif>">
 				</div>
 			</div>
 			<div class="control-group">

@@ -6,23 +6,6 @@
 	/*test = ORMExecuteQuery("select count(*) from Portfolio", [], true);
 	writeDump(test);*/
 	
-	if(not compareNoCase(url.acao, "novo")){
-		qSalvar = entityNew("Portfolio");
-		
-	} else if (not compareNoCase(url.acao, "atualizar") && isNumeric(url.id)){
-		qSalvar = entityLoadByPK("Portfolio", url.id);
-	}
-	
-	qSalvar.setTitle("Testes xpto");
-	qSalvar.setSummary("Sumary xpto");
-	qSalvar.setWebsite("www.xpto.com");
-	qSalvar.setImage("");
-	
-	entitySave(qSalvar);
-	
-	ormFlush();
-	
-	
 	
 /*	portfolios = entityload("Portfolio");
 	writeDump(portfolios);
