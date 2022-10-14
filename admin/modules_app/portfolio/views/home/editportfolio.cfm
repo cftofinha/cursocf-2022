@@ -67,7 +67,7 @@
 				<cfset qDados.setSummary(form.summary) />
 				<cfset qDados.setWebsite(form.website) />
 				<cfset qDados.setImage(form.image) />
-				<!---<cfset qDados.setCategorias(categoria) />--->
+				<cfset qDados.setCategorias(categoria) />
 				<cfset entitySave(qDados) />
 				<cfset ormFlush() />
 			<cfcatch type="any">

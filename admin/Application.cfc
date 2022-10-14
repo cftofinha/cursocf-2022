@@ -18,6 +18,8 @@ component {
 	this.ormSettings={
 		logsql=true,
 		dbcreate="update",
+		/*autogenmap=true,
+		savemapping = true,*/
 		cfclocation="com/entity"
 	};
 

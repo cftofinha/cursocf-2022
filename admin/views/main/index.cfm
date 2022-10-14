@@ -3,16 +3,14 @@
 	param name="url.id" default="";
 	ormReload();
 	
-	/*test = ORMExecuteQuery("select count(*) from Portfolio", [], true);
-	writeDump(test);*/
+	test = entityLoad("BlogPost");
+	writeDump(test);
 	
+	/*textHql = ormExecuteQuery("from blogPost a 
+								join a.categories c
+								where a.id = 2");*/
+	//writeDump(textHql);
 	
-/*	portfolios = entityload("Portfolio");
-	writeDump(portfolios);
-	
-	categorias = entityload("PortfolioCategory");
-	writeDump(categorias);
-	*/
 </cfscript>
 <cfoutput>
 <div class="text-center card shadow-sm bg-light border border-5 border-white">
@@ -25,8 +23,8 @@
 			#prc.welcomeMessage#
 		</h1>
 		
-		<cfdump var="#session#">
-
+		<!---<cfdump var="#session#">--->
+		<!---#test[1].getCategoryNames()#--->
 		<div class="col-lg-6 mx-auto">
 			<p class="lead mb-4">
 				Welcome to modern ColdFusion (CFML) development.  You can now start building your application with ease, we already did the hard work

@@ -1,5 +1,6 @@
 ﻿<cfset qCons = createObject("component","blog.models.Categorias").getCategorias() />
-<cfset qCons = entityLoad("Categorias") />
+<cfset hbnCategorias = entityLoad("BlogCategory") />
+<cfdump var="#hbnCategorias[2].getPosts()#">
 <!--- Pull Categories --->
 <cfoutput>
 	<div class="span10">
