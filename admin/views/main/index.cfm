@@ -3,8 +3,8 @@
 	param name="url.id" default="";
 	ormReload();
 	
-	test = entityLoad("BlogPost");
-	writeDump(test);
+	//test = entityLoad("BlogPost");
+	//writeDump(test);
 	
 	/*textHql = ormExecuteQuery("from blogPost a 
 								join a.categories c

@@ -1,5 +1,7 @@
 <!--- Pull Blog Posts --->
-<cfset qCons = createObject("component","blog.models.Blog").getPostsBlog() />
+<!---<cfset qCons = createObject("component","blog.models.Blog").getPostsBlog() />--->
+<!---<cfdump var="#prc.lista#">--->
+<cfset qCons = prc.lista />
 <!---<cfdump var="#qCons#"><cfabort>--->
 <cfoutput>
 		<div class="span10">

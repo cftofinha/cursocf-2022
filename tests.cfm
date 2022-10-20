@@ -1,4 +1,7 @@
-<cfoutput>
-	Salt = #GenerateSecretKey("AES")# <br>
-	AES = #Hash(GenerateSecretKey("AES"), "SHA-256", "UTF-8")# <br>
-</cfoutput>
+<cfprocessingdirective pageencoding="utf-8">
+<cfscript>
+	formatar = createObject("component","cfc.utilities");
+	
+	limparTexto = formatar.LimpaTexto(texto: "Acentuação");
+	writeDump(limparTexto);
+</cfscript>
