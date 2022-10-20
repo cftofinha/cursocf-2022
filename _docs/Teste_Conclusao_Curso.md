@@ -18,7 +18,7 @@
 
 1. Arquivo Application.cfc:
 
-    ```cfml
+    ```cfc
 		component{
 		this.name='TCC';
 		this.datasource = 'DIGITE-AQUI-O-NOME-DO-SEU-BANCO';
