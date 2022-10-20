@@ -116,7 +116,7 @@
 											</a>
 										</td>
 									</tr>
-								</cfloop>
+								
 							</tbody>
 						</table>
 					</div>	
