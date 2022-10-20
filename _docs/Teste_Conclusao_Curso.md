@@ -61,7 +61,7 @@
     ```
 	
 1. Arquivo lista.cfm:
-```cfml
+	```cfml
 		<html>
 			<!--- Metatags --->
 			<meta charset="utf-8">
@@ -127,7 +127,7 @@
 
 1. Arquivo formulario.cfm:
 
-    ```cfml
+   	```cfml
 		<cfoutput>
 			<html>
 				<!--- Metatags --->
