@@ -4,11 +4,11 @@
 
 1. Criar um projeto novo chamado **tcc** 
 
-1. Desenvolver um componente CFC com base na tabela nova **materia** e implementar as funcionalidades: LISTAR, DETALHAR, NOVO, ALTERAR E EXCLUIR
+1. Desenvolver um componente CFC com base na tabela nova **mensagens** e implementar as funcionalidades: LISTAR, DETALHAR, NOVO, ALTERAR E EXCLUIR
 
 1. Aplicar nos arquivos lista.cfm e formulario.cfm as funcionalidades acima
 
-1. Desenvolver um componente CFC com propriedade ORM/HIBERNATE com base na tabela nova **materia**
+1. Desenvolver um componente CFC com propriedade ORM/HIBERNATE com base na tabela nova **mensagens**
 
 1. Duplique o arquivos lista.cfm e faça uso do componente ORM para listagem
 
