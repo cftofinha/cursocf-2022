@@ -4,11 +4,11 @@
 
 1. Criar um projeto novo chamado **tcc** 
 
-1. Desenvolver um componente CFC com base na tabela nova **materia** e implementar as funcionalidades: LISTAR, DETALHAR, NOVO, ALTERAR E EXCLUIR
+1. Desenvolver um componente CFC com base na tabela nova **mensagens** e implementar as funcionalidades: LISTAR, DETALHAR, NOVO, ALTERAR E EXCLUIR
 
 1. Aplicar nos arquivos lista.cfm e formulario.cfm as funcionalidades acima
 
-1. Desenvolver um componente CFC com propriedade ORM/HIBERNATE com base na tabela nova **materia**
+1. Desenvolver um componente CFC com propriedade ORM/HIBERNATE com base na tabela nova **mensagens**
 
 1. Duplique o arquivos lista.cfm e faça uso do componente ORM para listagem
 
@@ -18,7 +18,7 @@
 
 1. Arquivo Application.cfc:
 
-    ```cfml
+    ```cfc
 		component{
 		this.name='TCC';
 		this.datasource = 'DIGITE-AQUI-O-NOME-DO-SEU-BANCO';
@@ -61,7 +61,7 @@
     ```
 	
 1. Arquivo lista.cfm:
-```cfml
+	```cfml
 		<html>
 			<!--- Metatags --->
 			<meta charset="utf-8">
@@ -116,7 +116,7 @@
 											</a>
 										</td>
 									</tr>
-								</cfloop>
+								
 							</tbody>
 						</table>
 					</div>	
@@ -127,7 +127,7 @@
 
 1. Arquivo formulario.cfm:
 
-    ```cfml
+   	```cfml
 		<cfoutput>
 			<html>
 				<!--- Metatags --->
