@@ -1,14 +1,21 @@
 <!--- Pull Blog Posts --->
 <!---<cfset qCons = createObject("component","blog.models.Blog").getPostsBlog() />--->
+<cftry>
+	<cfset qCons = createObject("component","blog.models.BlogScript").getPostsBlog(condicoesFiltros: " and a.blogpostid = 1") />
+	<cfdump var="#qCons#">
+<cfcatch type="any">
+	<cfdump var="#cfcatch#" >
+</cfcatch>
+</cftry>
 <!---<cfdump var="#prc.lista#">--->
-<cfset qCons = prc.lista />
-<!---<cfdump var="#qCons#"><cfabort>--->
+<!---<cfset qCons = prc.lista />--->
+<cfabort>
 <cfoutput>
 		<div class="span10">
 			<h2>Blog</h2>
 			    <form class="navbar-form pull-right">
 			    	<a class="btn btn-primary" href="#event.getHTMLBaseURL()#index.cfm/blog/novo-registro">
-						<i class="icon-plus icon-white"></i> 
+						<i class="icon-plus icon-white"></i>
 						New Blog Post
 					</a>
 			    </form>

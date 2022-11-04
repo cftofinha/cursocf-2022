@@ -1,15 +1,37 @@
 <cfscript>
+	variables.linkListagem = event.getHTMLBaseURL() & "index.cfm/" & event.getCurrentModule();
 	variables.condicoes = " 0 = 0 ";
-	qCons = createObject("component","resume.models.Resume").getMyResume(condicoesFiltros: variables.condicoes);
+	param name="form.type" default="";
+
+
+	if(isDefined("form.type") && compareNoCase(form.type, "")){
+		variables.condicoes = variables.condicoes & " and type = '#form.type#' ";
+	}
+	instModel = createObject("component","resume.models.Resume");
+	qCons = instModel.getMyResume(condicoesFiltros: variables.condicoes);
+	qTypes = instModel.getTypes();
 </cfscript>
 <cfoutput>
 <div class="span10">
 	<h2>Resume</h2>
-		<form class="navbar-form pull-right">
-			<a class="btn btn-primary" href="#event.getHTMLBaseURL()#index.cfm/resume/novo-registro/">
-				<i class="icon-plus icon-white"></i> 
-				New Resume
-			</a>
+		<form class="navbar-form pull-right" action="#variables.linkListagem#" method="post">
+			<div class="control-group">
+				<a class="btn btn-primary" href="#event.getHTMLBaseURL()#index.cfm/resume/novo-registro/">
+					<i class="icon-plus icon-white"></i>
+					New Resume
+				</a>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="type">Type</label>
+				<div class="controls">
+					<select name="type" id="type" onchange="this.form.submit()">
+						<option value="">Select the Type</option>
+						<cfloop query="qTypes">
+							<option value="#qTypes.type#" <cfif not compareNoCase(form.type, qTypes.type)> selected="selected"</cfif> >#qTypes.type#</option>
+						</cfloop>
+					</select>
+				</div>
+			</div>
 		</form>
 	<table class="table table-hover">
 		<thead>
@@ -21,7 +43,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			
+
 			<cfloop query="qCons">
 				<tr>
 					<td>
